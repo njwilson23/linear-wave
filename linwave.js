@@ -10,7 +10,7 @@ var k,
     h;
 
 var g = 9.8,
-    n = 30;
+    n = 100;
 
 var canvas = document.getElementById('waves');
 var context = canvas.getContext('2d'),
@@ -59,7 +59,7 @@ function addWater(t) {
   context.lineTo(0, height);
   context.lineTo(0, 0.2*height);
   for (var i=0; i < u.length; i++) {
-    zs = hts + (height-hts) / H * u[i];
+    zs = hts - (height-hts) / H * u[i];
     context.lineTo(i*width/(u.length-1), zs);
   }
   context.fill();
@@ -74,13 +74,13 @@ function addParticle(xs, zs, t) {
       x = xs / width * L;
 
   // particle displacements
-  var theta = k*x - om/1000*t,
+  var theta = phase(x, t),
       psi = -eta * Math.sin(theta) * Math.cosh(k*(z+H)) / Math.sinh(k*H),
       zeta = eta * Math.cos(theta) * Math.sinh(k*(z+H)) / Math.sinh(k*H);
 
   // displacements scaled to pixels
-  var psis = -psi * width / L,      // why negative here?
-      zetas = zeta * (height-hts) / H;
+  var psis = psi * width / L,
+      zetas = -zeta * (height-hts) / H;
 
   context.fillStyle = "#000000";
   context.beginPath();
@@ -100,9 +100,13 @@ function addParticle(xs, zs, t) {
 
 function waveSurface(t) {
   var u = x.map(function (x) {
-      return eta * Math.cos(k*x - om/1000*t);
+      return eta * Math.cos(phase(x,t));
     });
   return u;
+}
+
+function phase(x, t) {
+  return k*x - om*t/1000;
 }
 
 // ellipse code from Steve Tranby
