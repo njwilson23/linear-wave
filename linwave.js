@@ -10,7 +10,7 @@ var k,
     h;
 
 var g = 9.8,
-    n = 100;
+    n = 30;
 
 var canvas = document.getElementById('waves');
 var context = canvas.getContext('2d'),
@@ -47,20 +47,20 @@ function drawFrame(t) {
 }
 
 function addWater(t) {
-  var h = height,
-      w = width,
-      hts = height / 5;
+  var hts = height / 5;
   var u = waveSurface(t);
+  var ulast = u[u.length-1];
 
   context.fillStyle = "#8888FF";
   context.beginPath();
-  context.moveTo(w, 0.2*height + 0.2*height*u[-1]);
-  context.lineTo(w, height);
+  // start at upper left
+  context.moveTo(width, hts + (height-hts) / H * ulast);
+  context.lineTo(width, height);
   context.lineTo(0, height);
   context.lineTo(0, 0.2*height);
   for (var i=0; i < u.length; i++) {
     zs = hts + (height-hts) / H * u[i];
-    context.lineTo(i*w/u.length, zs);
+    context.lineTo(i*width/(u.length-1), zs);
   }
   context.fill();
   context.closePath();
