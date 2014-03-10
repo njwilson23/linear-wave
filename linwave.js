@@ -34,14 +34,23 @@ function clearFrame() {
 }
 
 function drawFrame(t) {
+  addWater(t);
+  addParticle(0.5*width, 0.2*height, t);
+  addParticle(0.5*width, 0.3*height, t);
+  addParticle(0.5*width, 0.5*height, t);
+  addParticle(0.5*width, 0.7*height, t);
+  addParticle(0.5*width, 0.9*height, t);
+  return;
+}
+
+function addWater(t) {
   var h = height,
       w = width,
       hts = height / 5;
+  var u = waveSurface(t);
 
-  // water
   context.fillStyle = "#8888FF";
   context.beginPath();
-  var u = waveSurface(t);
   context.moveTo(w, 0.2*height + 0.2*height*u[-1]);
   context.lineTo(w, height);
   context.lineTo(0, height);
@@ -50,18 +59,9 @@ function drawFrame(t) {
     zs = 0.2 * height + (height-hts) * u[i] / H;
     context.lineTo(i*w/u.length, zs);
   }
-  //context.stroke();
   context.fill();
   context.closePath();
-
-  // particle
-  addParticle(0.5*w, 0.2*height, t);
-  addParticle(0.5*w, 0.3*height, t);
-  addParticle(0.5*w, 0.5*height, t);
-  addParticle(0.5*w, 0.7*height, t);
-  addParticle(0.5*w, 0.9*height, t);
-
-
+  return;
 }
 
 function addParticle(xs, zs, t) {
@@ -81,7 +81,6 @@ function addParticle(xs, zs, t) {
   context.stroke();
   context.fill();
   context.closePath();
-
   return;
 }
 
