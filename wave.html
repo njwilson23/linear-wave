@@ -10,21 +10,72 @@
 
     canvas#waves {
       width: 99%;
-      max-width: 1000px;
+      //max-width: 1000px;
+      position: fixed;
+      z-index: -1;
+    }
+
+    div#controls {
+
+      background-color: rgba(255, 255, 255, 0.3);
+      //margin-top: 10%;
+      margin-left: 60%;
+
+      padding-top: 1em;
+      padding-bottom: 1em;
+      padding-left: 2em;
+      padding-right: 2em;
+
+      width: 15%;
+      min-width: 10em;
+      min-height: 60%;
+
     }
 
   </style>
 
-  <!--<div id="waveSim">-->
-    <canvas id="waves" width="1000" height="700"></canvas> 
-  <!--</div>-->
+  <canvas id="waves" width="1000" height="700"></canvas> 
+
+  <div id="controls">
+    <p>This is the controls box. </p>
+    <p>It has loads of text. </p>
+    k <input id="k" type="range" inputmode="numeric" min="0.1" max="2" value="0.5" step="0.1" onchange="setInputk()"/>
+    omega <input id="omega" type="range" inputmode="numeric" min="0.1" max="10" value="1.0" step="0.1" onchange="setInputom()"/>
+    H <input id="H" type="range" inputmode="numeric" min="1" max="50" value="10" step="0.5" onchange="setInputH()"/>
+    eta <input id="eta" type="range" inputmode="numeric" min="0.1" max="5" value="0.5" step="0.1" onchange="setInputeta()"/>
+  </div>
 
   <script type="text/javascript" src="linwave.js"></script>
   <script type="text/javascript">
+
+    function setInputk() {
+      k = parseFloat(document.getElementById("k").value);
+      return;
+    }
+
+    function setInputom() {
+      om = parseFloat(document.getElementById("om").value);
+      return;
+    }
+
+    function setInputH() {
+      H = parseFloat(document.getElementById("H").value);
+      L = 1.42*H;
+      return;
+    }
+
+    function setInputeta() {
+      eta = Math.min(parseFloat(document.getElementById("eta").value),
+                     Math.floor(0.9*H*10)/10);
+      console.log(eta);
+      return;
+    }
+
+
     var k = 0.5,
         om = 1.0,
         eta = 0.5,
-        H = 5.0,
+        H = 10.0,
         L = 1.42*H;
 
     var x = Array.apply(null, Array(n)).map(function (_, i) {
