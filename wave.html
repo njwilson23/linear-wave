@@ -9,7 +9,8 @@
   <style>
 
     canvas#waves {
-      width: 80%;
+      width: 99%;
+      max-width: 1000px;
     }
 
   </style>
@@ -18,14 +19,17 @@
     <canvas id="waves" width="1000" height="700"></canvas> 
   <!--</div>-->
 
-  <!--<script type="text/javascript" src="external/d3.v3.min.js"></script>-->
   <script type="text/javascript" src="linwave.js"></script>
   <script type="text/javascript">
     var k = 0.5,
         om = 1.0,
-        H = 10.0,
-        L = 1.42*H,
-        eta = 0.5;
+        eta = 0.5,
+        H = 5.0,
+        L = 1.42*H;
+
+    var x = Array.apply(null, Array(n)).map(function (_, i) {
+          return L/n*i;
+        });
 
     requestAnimationFrame(drawLoop);
   </script>

@@ -10,8 +10,7 @@ var k,
     h;
 
 var g = 9.8,
-    n = 100,
-    x = Array.apply(null, Array(n)).map(function (_, i) {return 4*Math.PI/n*i;});
+    n = 100;
 
 var canvas = document.getElementById('waves');
 var context = canvas.getContext('2d'),
@@ -35,11 +34,15 @@ function clearFrame() {
 
 function drawFrame(t) {
   addWater(t);
-  addParticle(0.5*width, 0.2*height, t);
-  addParticle(0.5*width, 0.3*height, t);
-  addParticle(0.5*width, 0.5*height, t);
-  addParticle(0.5*width, 0.7*height, t);
-  addParticle(0.5*width, 0.9*height, t);
+
+  var particleY = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+  var particleX = [0.1, 0.5, 0.9];
+  for (var ipy=0; ipy < particleY.length; ipy++) {
+    for (var ipx=0; ipx < particleX.length; ipx++) {
+      addParticle(particleX[ipx]*width, particleY[ipy]*height, t);
+    }
+  }
+
   return;
 }
 
@@ -56,7 +59,7 @@ function addWater(t) {
   context.lineTo(0, height);
   context.lineTo(0, 0.2*height);
   for (var i=0; i < u.length; i++) {
-    zs = 0.2 * height + (height-hts) * u[i] / H;
+    zs = hts + (height-hts) / H * u[i];
     context.lineTo(i*w/u.length, zs);
   }
   context.fill();
@@ -65,14 +68,18 @@ function addWater(t) {
 }
 
 function addParticle(xs, zs, t) {
-  var hts = height / 5; // pixel location of water surface
-  var z = -((zs - hts) / (height - hts)) * H;
-  var x = xs / width * L;
-  var theta = k*x - om/1000*t;
-  var psi = -eta * Math.sin(theta) * Math.cosh(k*(z+H)) / Math.sinh(k*H);
-  var zeta = eta * Math.cos(theta) * Math.sinh(k*(z+H)) / Math.sinh(k*H);
+  // scales
+  var hts = height / 5, // pixel location of water surface
+      z = -(zs - hts) / (height - hts) * H,
+      x = xs / width * L;
 
-  var psis = psi * width / L,
+  // particle displacements
+  var theta = k*x - om/1000*t,
+      psi = -eta * Math.sin(theta) * Math.cosh(k*(z+H)) / Math.sinh(k*H),
+      zeta = eta * Math.cos(theta) * Math.sinh(k*(z+H)) / Math.sinh(k*H);
+
+  // displacements scaled to pixels
+  var psis = -psi * width / L,      // why negative here?
       zetas = zeta * (height-hts) / H;
 
   context.fillStyle = "#000000";
@@ -81,14 +88,45 @@ function addParticle(xs, zs, t) {
   context.stroke();
   context.fill();
   context.closePath();
+
+  var psimax = eta * Math.cosh(k*(z+H))  / Math.sinh(k*H),
+      zetamax = eta * Math.sinh(k*(z+H))  / Math.sinh(k*H);
+  var psimaxs = psimax * width / L,
+      zetamaxs = zetamax * (height-hts) / H;
+  drawEllipseByCenter(context, xs, zs, psimaxs*2, zetamaxs*2);
+
   return;
 }
 
 function waveSurface(t) {
   var u = x.map(function (x) {
-      var xm = x / width * L;
       return eta * Math.cos(k*x - om/1000*t);
     });
   return u;
 }
 
+// ellipse code from Steve Tranby
+// http://stackoverflow.com/questions/2172798/how-to-draw-an-oval-in-html5-canvas
+function drawEllipseByCenter(ctx, cx, cy, w, h) {
+  drawEllipse(ctx, cx - w/2.0, cy - h/2.0, w, h);
+}
+
+function drawEllipse(ctx, x, y, w, h) {
+  var kappa = .5522848,
+      ox = (w / 2) * kappa, // control point offset horizontal
+      oy = (h / 2) * kappa, // control point offset vertical
+      xe = x + w,           // x-end
+      ye = y + h,           // y-end
+      xm = x + w / 2,       // x-middle
+      ym = y + h / 2;       // y-middle
+
+  ctx.beginPath();
+  ctx.moveTo(x, ym);
+  ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
+  ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
+  ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+  ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.closePath()
+}
