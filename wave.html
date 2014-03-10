@@ -52,19 +52,11 @@
     <p>k = <span id="kValue"></span></p>
     <input id="k" type="range" inputmode="numeric" min="0.1" max="2" value="0.5" step="0.1" onchange="setInputk()"/>
 
-    <p>ω = <span id="omValue"></span></p>
-    <input id="om" type="range" inputmode="numeric" min="0.1" max="10" value="1.0" step="0.1" onchange="setInputom()" disabled="true"/>
-
     <p>H = <span id="HValue"></span></p>
     <input id="H" type="range" inputmode="numeric" min="1" max="50" value="10" step="0.5" onchange="setInputH()"/>
 
     <p>η = <span id="etaValue"></span></p>
     <input id="eta" type="range" inputmode="numeric" min="0.1" max="5" value="0.5" step="0.1" onchange="setInputeta()"/>
-
-    <p><input id="fixedk" name="fixParam" type="radio" onclick="fixParam()">
-    Fixed k<br>
-    <input id="fixedom" name="fixParam" type="radio" checked="true" onclick="fixParam()">
-    Fixed ω</p>
 
     <input id="reset" type="button" value="Reset" onclick="reset()"/>
 
@@ -76,12 +68,6 @@
     function setInputk() {
       k = parseFloat(document.getElementById("k").value);
       document.getElementById("kValue").textContent = k;
-      return;
-    }
-
-    function setInputom() {
-      om = parseFloat(document.getElementById("om").value);
-      document.getElementById("omValue").textContent = om;
       return;
     }
 
@@ -99,28 +85,9 @@
       return;
     }
 
-    function omfixed() {
-      return document.getElementById("fixedom").disabled;
-    }
-
-    function fixParam() {
-      if (omfixed()) {
-        document.getElementById("om").disabled = true;
-        document.getElementById("k").disabled = false;
-        console.log(document.getElementById("om").disabled);
-
-      } else {
-        document.getElementById("k").disabled = true;
-        document.getElementById("om").disabled = false;
-
-      }
-      return;
-    }
-
     function reset() {
       var defaultParams = {};
       defaultParams["k"] = 0.5;
-      defaultParams["om"] = 1.0;
       defaultParams["H"] = 10.0;
       defaultParams["eta"] = 0.5;
 
@@ -131,7 +98,6 @@
       }
 
       setInputk();
-      setInputom();
       setInputH();
       setInputeta();
     }

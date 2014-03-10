@@ -6,9 +6,9 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
 
 Math.cosh = Math.cosh || function(x) {return (Math.exp(x) + Math.exp(-x))/2;};
 Math.sinh = Math.sinh || function(x) {return (Math.exp(x) - Math.exp(-x))/2;};
+Math.tanh = Math.tanh || function(x) {return Math.sinh(x) / Math.cosh(x);};
 
 var k,
-    om,
     eta,
     h;
 
@@ -109,6 +109,7 @@ function waveSurface(t) {
 }
 
 function phase(x, t) {
+  var om = Math.sqrt(g * k * Math.tanh(k*H));
   return k*x - om*t/1000;
 }
 
