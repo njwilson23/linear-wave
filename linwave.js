@@ -4,6 +4,9 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
                               window.webkitRequestAnimationFrame ||
                               window.msRequestAnimationFrame;
 
+Math.cosh = Math.cosh || function(x) {return (Math.exp(x) + Math.exp(-x))/2;};
+Math.sinh = Math.sinh || function(x) {return (Math.exp(x) - Math.exp(-x))/2;};
+
 var k,
     om,
     eta,
