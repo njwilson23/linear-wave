@@ -6,17 +6,32 @@
 
 <body>
 
-  <div id="waveSim"></div>
+  <style>
 
-  <script type="text/javascript" src="external/d3.v3.min.js"></script>
+    canvas#waves {
+      width: 80%;
+    }
+
+  </style>
+
+  <!--<div id="waveSim">-->
+    <canvas id="waves" width="1000" height="700"></canvas> 
+  <!--</div>-->
+
+  <!--<script type="text/javascript" src="external/d3.v3.min.js"></script>-->
   <script type="text/javascript" src="linwave.js"></script>
   <script type="text/javascript">
-    var k = 0.3,
-        om = 0.05,
-        h = 10.0,
+    var k = 0.5,
+        om = 1.0,
+        H = 10.0,
+        L = 1.42*H,
         eta = 0.5;
-    waves = new Waves(k, om, h, eta);
-    waves.draw();
+    //waves = new Waves(k, om, h, eta);
+    //waves.drawloop();
+
+
+    //drawFrame(0);    // for testing
+    requestAnimationFrame(drawLoop);
   </script>
 
 </body>
