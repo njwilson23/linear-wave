@@ -8,12 +8,11 @@ Math.cosh = Math.cosh || function(x) {return (Math.exp(x) + Math.exp(-x))/2;};
 Math.sinh = Math.sinh || function(x) {return (Math.exp(x) - Math.exp(-x))/2;};
 Math.tanh = Math.tanh || function(x) {return Math.sinh(x) / Math.cosh(x);};
 
-var k,
-    eta,
-    h;
+var k, eta, h;
 
 var g = 9.8,
-    n = 100;
+    n = 200,
+    fracSky = 0.2;
 
 var canvas = document.getElementById('waves');
 var context = canvas.getContext('2d'),
@@ -50,7 +49,7 @@ function drawFrame(t) {
 }
 
 function addWater(t) {
-  var hts = height / 5;
+  var hts = height * fracSky;
   var u = waveSurface(t);
   var ulast = u[u.length-1];
 
@@ -60,7 +59,7 @@ function addWater(t) {
   context.moveTo(width, hts + (height-hts) / H * ulast);
   context.lineTo(width, height);
   context.lineTo(0, height);
-  context.lineTo(0, 0.2*height);
+  context.lineTo(0, hts);
   for (var i=0; i < u.length; i++) {
     zs = hts - (height-hts) / H * u[i];
     context.lineTo(i*width/(u.length-1), zs);
@@ -72,7 +71,7 @@ function addWater(t) {
 
 function addParticle(xs, zs, t) {
   // scales
-  var hts = height / 5, // pixel location of water surface
+  var hts = height * fracSky, // pixel location of water surface
       z = -(zs - hts) / (height - hts) * H,
       x = xs / width * L;
 
@@ -109,7 +108,7 @@ function waveSurface(t) {
 }
 
 function phase(x, t) {
-  var om = Math.sqrt(g * k * Math.tanh(k*H));
+  var om = Math.sqrt(g*k * Math.tanh(k*H));
   return k*x - om*t/1000;
 }
 
