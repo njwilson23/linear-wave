@@ -74,6 +74,7 @@
     function setInputH() {
       H = parseFloat(document.getElementById("H").value);
       L = 1.42*H;
+      x = Array.apply(null, Array(n)).map(function (_, i) {return L/n*i;});
       document.getElementById("HValue").textContent = H;
       return;
     }
@@ -103,9 +104,6 @@
     }
 
     reset();    // set to defaults
-    var x = Array.apply(null, Array(n)).map(function (_, i) {
-          return L/n*i;
-        });
 
     requestAnimationFrame(drawLoop);
   </script>
