@@ -30,12 +30,30 @@
     z-index: -1;
   }
 
+  span.resultType {
+    float: right;
+    width: 10em;
+    font-size: large;
+  }
+
+  span.result {
+    float: right;
+    width: 4em;
+    font-size: x-large;
+  }
+
+  div#results {
+    position: fixed;
+    right: 2em;
+    top: 1em;
+  }
+
   div#controls {
     position: fixed;
     left: 2em;
     bottom: 2em;
 
-    padding-top: 1em;
+    padding-top: 0em;
     padding-bottom: 1em;
     padding-left: 1em;
     padding-right: 1em;
@@ -59,16 +77,31 @@
 
   <canvas id="waves" width="1000" height="700"></canvas> 
 
-  <div id="controls">
-    <p>Wave parameters</p>
+  <div id="results">
+    <table>
+      <tr>
+        <td><span class="resultType">Angular frequency</span></td>
+        <td><span class="result" id="om"></span></td>
+      </tr><tr>
+        <td><span class="resultType">Phase speed</span></td>
+        <td><span class="result" id="cp"></span></td>
+      </tr><tr>
+        <td><span class="resultType">Group velocity</span></td>
+        <td><span class="result" id="cg"></span></td>
+      </tr>
+    </table>
+  </div>
 
-    <p>k = <span id="kValue"></span></p>
+  <div id="controls">
+    <h3>Parameters</h3>
+
+    <p>Wavenumber (k) = <span id="kValue"></span></p>
     <input id="k" type="range" inputmode="numeric" min="0.05" max="1" value="0.5" step="0.05" oninput="setInputk()"/>
 
-    <p>H = <span id="HValue"></span></p>
+    <p>Depth (H) = <span id="HValue"></span></p>
     <input id="H" type="range" inputmode="numeric" min="1" max="50" value="10" step="0.5" oninput="setInputH()"/>
 
-    <p>η = <span id="etaValue"></span></p>
+    <p>Amplitude (η) = <span id="etaValue"></span></p>
     <input id="eta" type="range" inputmode="numeric" min="0.1" max="5" value="0.5" step="0.1" oninput="setInputeta()"/>
 
     <input id="reset" type="button" value="Reset" onclick="reset()"/>
@@ -80,6 +113,7 @@
     function setInputk() {
       k = parseFloat(document.getElementById("k").value);
       document.getElementById("kValue").textContent = k;
+      updateResults();
       return;
     }
 
@@ -88,6 +122,7 @@
       L = 1.42*H;
       x = Array.apply(null, Array(n)).map(function (_, i) {return L/n*i;});
       document.getElementById("HValue").textContent = H;
+      updateResults();
       return;
     }
 
@@ -95,7 +130,21 @@
       eta = Math.min(parseFloat(document.getElementById("eta").value),
                      Math.floor(0.9*H*10)/10);
       document.getElementById("etaValue").textContent = eta;
+      //updateResults();
       return;
+    }
+
+    function updateResults() {
+      var k = parseFloat(document.getElementById("kValue").textContent),
+          H = parseFloat(document.getElementById("HValue").textContent);
+     
+      var om = Math.sqrt(g*k * Math.tanh(k*H));
+      var cp = Math.sqrt(g/k * Math.tanh(k*H));
+      var cg = cp/2 * (1 + k*H * (1-Math.pow(Math.tanh(k*H), 2)) / (Math.tanh(k*H)));
+      document.getElementById("om").textContent = Math.round(om*100)/100 + " /s";
+      document.getElementById("cp").textContent = Math.round(cp*100)/100 + " m/s";
+      document.getElementById("cg").textContent = Math.round(cg*100)/100 + " m/s";
+
     }
 
     function reset() {
