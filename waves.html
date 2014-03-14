@@ -8,13 +8,25 @@
 <body>
 
   <style>
+
+  @font-face {
+  	font-family: 'Computer Modern Serif';
+  	src: url('fonts/cmunrm.eot');
+  	src: url('fonts/cmunrm.eot?#iefix') format('embedded-opentype'),
+  		 url('fonts/cmunrm.woff') format('woff'),
+  		 url('fonts/cmunrm.ttf') format('truetype'),
+  		 url('fonts/cmunrm.svg#cmunrm') format('svg');
+  	font-weight: normal;
+  	font-style: normal;
+  }
+
   body {
-    font-family: sans-serif;
+    font-family: 'Computer Modern Serif', sans-serif;
   }
 
   canvas#waves {
     width: 100%;
-    position: fixed;
+    position: absolute;
     z-index: -1;
   }
 
