@@ -121,6 +121,7 @@
       H = parseFloat(document.getElementById("H").value);
       L = 1.42*H;
       x = Array.apply(null, Array(n)).map(function (_, i) {return L/n*i;});
+      waterclr = createWaterGradient(H);
       document.getElementById("HValue").textContent = H;
       updateResults();
       return;

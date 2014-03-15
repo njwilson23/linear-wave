@@ -53,7 +53,8 @@ function addWater(t) {
   var u = waveSurface(t);
   var ulast = u[u.length-1];
 
-  context.fillStyle = "#8888FF";
+  //context.fillStyle = "#8888FF";
+  context.fillStyle = waterclr;
   context.beginPath();
   // start at upper left
   context.moveTo(width, hts + (height-hts) / H * ulast);
@@ -67,6 +68,18 @@ function addWater(t) {
   context.fill();
   context.closePath();
   return;
+}
+
+function createWaterGradient(H) {
+  var hts = height * fracSky,
+      zBase = hts + (20*height/H);
+  var waterclr = context.createLinearGradient(0, fracSky*height, 0, zBase);
+  waterclr.addColorStop(0, "#AAAAFF");
+  waterclr.addColorStop(0.1, "#8888FF");
+  waterclr.addColorStop(0.3, "#4444B0");
+  waterclr.addColorStop(0.6, "#333390");
+  waterclr.addColorStop(1, "#222270");
+  return waterclr
 }
 
 function addParticle(xs, zs, t) {
@@ -91,7 +104,7 @@ function addParticle(xs, zs, t) {
   context.fill();
   context.closePath();
 
-  context.strokeStyle = "#555555";
+  context.strokeStyle = "#444444";
   var psimax = eta * Math.cosh(k*(z+H))  / Math.sinh(k*H),
       zetamax = eta * Math.sinh(k*(z+H))  / Math.sinh(k*H);
   var psimaxs = psimax * width / L,
