@@ -91,6 +91,7 @@ function addParticle(xs, zs, t) {
   context.fill();
   context.closePath();
 
+  context.strokeStyle = "#555555";
   var psimax = eta * Math.cosh(k*(z+H))  / Math.sinh(k*H),
       zetamax = eta * Math.sinh(k*(z+H))  / Math.sinh(k*H);
   var psimaxs = psimax * width / L,
