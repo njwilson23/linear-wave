@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<meta charset=UTF-8>
+<html>
+
+<body>
+<canvas id="waves" width="500" height="500"></canvas> 
+
+<script type="text/javascript" src="internalwave.js"></script>
+<script type="text/javascript">
+  var canvas = document.getElementById('waves');
+  var context = canvas.getContext('2d'),
+      cheight = canvas.height,
+      cwidth = canvas.width;
+  var wv = new InternalWave(context, 1.0, 1.0, -Math.PI/4, Math.PI/16);
+  var startTime;
+  requestAnimationFrame(drawLoop);
+</script>
+
+</body>
+
+</html>
