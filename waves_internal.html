@@ -3,15 +3,19 @@
 <html>
 
 <body>
-<canvas id="waves" width="500" height="500"></canvas> 
+<canvas id="waves" width="500" height="300"></canvas>
 
 <script type="text/javascript" src="internalwave.js"></script>
 <script type="text/javascript">
-  var canvas = document.getElementById('waves');
-  var context = canvas.getContext('2d'),
-      cheight = canvas.height,
-      cwidth = canvas.width;
-  var wv = new InternalWave(context, 1.0, 1.0, -Math.PI/4, Math.PI/16);
+
+  var cparams = {
+    canvas: document.getElementById("waves"),
+    width: document.getElementById("waves").width,
+    height: document.getElementById("waves").height,
+    context: document.getElementById("waves").getContext("2d")
+  }
+
+  var wv = new InternalWave(cparams.context, 1.0, 1.0, -Math.PI/4);
   var startTime;
   requestAnimationFrame(drawLoop);
 </script>

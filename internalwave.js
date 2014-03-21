@@ -3,12 +3,11 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
                               window.webkitRequestAnimationFrame ||
                               window.msRequestAnimationFrame;
 
-function InternalWave(cntxt, k, m, phi, beta) {
+function InternalWave(cntxt, k, m, phi) {
   this.cntxt = cntxt;
   this.k = k;
   this.m = m;
   this.phi = phi;
-  this.beta = beta;
   this.N = 1.0;
 
   this.wx = [-1.0, 1.0];
@@ -34,17 +33,20 @@ InternalWave.prototype.kVec = function() {
   return kv;
 }
 
-InternalWave.prototype.cgVec = function () {
+InternalWave.prototype.cgVec = function() {
   var cg = [Math.cos(this.phi), Math.sin(this.phi)];
   //document.write(cg);
   return cg;
 }
 
+InternalWave.prototype.reflect = function(beta) {
+  // not implemented
+}
 
 
 function drawLoop(t) {
   t = t || new Date.time();
-  if (startTime === null) startTime = t;
+
   var elapsedTime = t - startTime;
   clearFrame();
   drawFrame(elapsedTime);
@@ -52,21 +54,21 @@ function drawLoop(t) {
 }
 
 function clearFrame() {
-  context.clearRect(0, 0, cwidth, cheight);
+  cparams.context.clearRect(0, 0, cparams.width, cparams.height);
 }
 
 function drawFrame(t) {
   var k = wv.kVec(),
       cg = wv.cgVec(),
-      x0 = [0.5*cwidth, 0.5*cheight],
-      sx = cwidth / wv.width,
-      sz = cheight / wv.height;
+      x0 = [0.5*cparams.width, 0.5*cparams.height],
+      sx = cparams.width / wv.width,
+      sz = cparams.height / wv.height;
   wv.cntxt.beginPath();
   wv.cntxt.moveTo(x0[0], x0[1]);
-  wv.cntxt.lineTo(x0[0] + cg[0]*sx, 
+  wv.cntxt.lineTo(x0[0] + cg[0]*sx,
                   x0[1] - cg[1]*sz);
   wv.cntxt.moveTo(x0[0], x0[1]);
-  wv.cntxt.lineTo(x0[0] + k[0]*sx, 
+  wv.cntxt.lineTo(x0[0] + k[0]*sx,
                   x0[1] - k[1]*sz);
   wv.cntxt.closePath();
   wv.cntxt.stroke();
