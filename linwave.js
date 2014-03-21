@@ -1,4 +1,4 @@
-
+'use strict';
 window.requestAnimationFrame = window.requestAnimationFrame ||
                               window.mozRequestAnimationFrame ||
                               window.webkitRequestAnimationFrame ||
@@ -62,7 +62,7 @@ function addWater(t) {
   context.lineTo(0, height);
   context.lineTo(0, hts);
   for (var i=0; i < u.length; i++) {
-    zs = hts - (height-hts) / H * u[i];
+    var zs = hts - (height-hts) / H * u[i];
     context.lineTo(i*width/(u.length-1), zs);
   }
   context.fill();
