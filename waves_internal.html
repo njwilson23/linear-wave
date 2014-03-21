@@ -16,8 +16,8 @@
     context: document.getElementById("waves").getContext("2d")
   }
 
-  var wv = new InternalWave(cparams.context, 0.0, 0.5, 1.0, 1.0, -Math.PI/4);
-  wv.reflect(Math.PI/16, 0.7);
+  var wv = new InternalWave(cparams.context, 0.0, 0.5, 1.0, 1.0, -Math.PI/8);
+  wv.reflect(Math.PI/16, 0.3);
   var startTime;
   requestAnimationFrame(drawLoop);
 </script>

@@ -18,7 +18,6 @@ function InternalWave(ctx, x, z, k, m, phi) {
   this.height = this.wz[1] - this.wz[0];
   this.xi = x;
   this.zi = z;
-  //this.updateOmega();
   allWaves.push(this);
 }
 
@@ -34,12 +33,12 @@ InternalWave.prototype.kVec = function() {
   } else {
     theta = this.phi - Math.PI * 0.5;
   }
-  var kv = [Math.cos(theta), Math.sin(theta)];
+  var kv = [0.2*Math.cos(theta), 0.2*Math.sin(theta)];
   return kv;
 }
 
 InternalWave.prototype.cgVec = function() {
-  var cg = [Math.cos(this.phi), Math.sin(this.phi)];
+  var cg = [0.2*Math.cos(this.phi), 0.2*Math.sin(this.phi)];
   return cg;
 }
 
@@ -77,7 +76,6 @@ function drawFrame(t) {
               (wv.zi-wv.wz[0]) / (wv.wz[1]-wv.wz[0]) * cparams.height],
         sx = cparams.width / wv.width,
         sz = cparams.height / wv.height;
-
     if (wv.ctx) {
       wv.ctx.lineWidth = 3.0;
       wv.ctx.beginPath();
@@ -93,8 +91,5 @@ function drawFrame(t) {
                       x0[1] - k[1]*sz);
       wv.ctx.stroke();
       //wv.ctx.closePath();
-    } else {
-    console.log("wave "+i+" out of view")}
-  }
   return;
 }
