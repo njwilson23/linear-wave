@@ -17,6 +17,7 @@ function InternalWave(ctx, k, m, phi) {
   this.width = this.wx[1] - this.wx[0];
   this.height = this.wz[1] - this.wz[0];
   //this.updateOmega();
+  allWaves.push(this);
 }
 
 InternalWave.prototype.updateOmega = function() {
@@ -37,7 +38,6 @@ InternalWave.prototype.kVec = function() {
 
 InternalWave.prototype.cgVec = function() {
   var cg = [Math.cos(this.phi), Math.sin(this.phi)];
-  //document.write(cg);
   return cg;
 }
 
@@ -48,9 +48,10 @@ InternalWave.prototype.reflect = function(beta, dx) {
   }
   var kr = this.k * Math.sin(this.phi+beta) / Math.sin(this.phi-beta),
       mr = this.m * Math.sin(this.phi+beta) / Math.sin(this.phi-beta);
-  return new InternalWave(this.cntxt, kr, mr, phir);
+  console.log(phir, kr, mr);
+  wvr = new InternalWave(this.cntxt, kr, mr, phir);
+  allWaves.push(wvr);
 }
-
 
 function drawLoop(t) {
   t = t || new Date.time();
@@ -58,7 +59,7 @@ function drawLoop(t) {
   var elapsedTime = t - startTime;
   clearFrame();
   drawFrame(elapsedTime);
-  requestAnimationFrame(drawLoop);
+  //requestAnimationFrame(drawLoop);
 }
 
 function clearFrame() {
@@ -66,11 +67,14 @@ function clearFrame() {
 }
 
 function drawFrame(t) {
-  var k = wv.kVec(),
-      cg = wv.cgVec(),
-      x0 = [0.5*cparams.width, 0.5*cparams.height],
-      sx = cparams.width / wv.width,
-      sz = cparams.height / wv.height;
+  for (var i=0; i<allWaves.length; i++) {
+    var wv = allWaves[i],
+        k = wv.kVec(),
+        cg = wv.cgVec(),
+        x0 = [0.5*cparams.width, 0.5*cparams.height],
+        sx = cparams.width / wv.width,
+        sz = cparams.height / wv.height;
+
     wv.ctx.lineWidth = 3.0;
     wv.ctx.beginPath();
     wv.ctx.moveTo(x0[0], x0[1]);
@@ -85,5 +89,6 @@ function drawFrame(t) {
                     x0[1] - k[1]*sz);
     wv.ctx.stroke();
     //wv.ctx.closePath();
+  }
   return;
 }
