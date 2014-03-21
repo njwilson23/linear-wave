@@ -39,8 +39,14 @@ InternalWave.prototype.cgVec = function() {
   return cg;
 }
 
-InternalWave.prototype.reflect = function(beta) {
-  // not implemented
+InternalWave.prototype.reflect = function(beta, dx) {
+  var phir = -this.phi; // assume forward reflection
+  if (phir < beta) {
+    phir = Math.PI-this.phi; // if this is less than the slope angle, back-reflect
+  }
+  var kr = this.k * Math.sin(this.phi+beta) / Math.sin(this.phi-beta),
+      mr = this.m * Math.sin(this.phi+beta) / Math.sin(this.phi-beta);
+  return new InternalWave(this.cntxt, kr, mr, phir);
 }
 
 
