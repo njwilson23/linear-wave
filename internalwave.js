@@ -3,8 +3,10 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
                               window.webkitRequestAnimationFrame ||
                               window.msRequestAnimationFrame;
 
-function InternalWave(cntxt, k, m, phi) {
-  this.cntxt = cntxt;
+var allWaves = new Array(0);
+
+function InternalWave(ctx, k, m, phi) {
+  this.ctx = ctx;
   this.k = k;
   this.m = m;
   this.phi = phi;
@@ -69,14 +71,19 @@ function drawFrame(t) {
       x0 = [0.5*cparams.width, 0.5*cparams.height],
       sx = cparams.width / wv.width,
       sz = cparams.height / wv.height;
-  wv.cntxt.beginPath();
-  wv.cntxt.moveTo(x0[0], x0[1]);
-  wv.cntxt.lineTo(x0[0] + cg[0]*sx,
-                  x0[1] - cg[1]*sz);
-  wv.cntxt.moveTo(x0[0], x0[1]);
-  wv.cntxt.lineTo(x0[0] + k[0]*sx,
-                  x0[1] - k[1]*sz);
-  wv.cntxt.closePath();
-  wv.cntxt.stroke();
+    wv.ctx.lineWidth = 3.0;
+    wv.ctx.beginPath();
+    wv.ctx.moveTo(x0[0], x0[1]);
+    wv.ctx.lineTo(x0[0] + cg[0]*sx,
+                    x0[1] - cg[1]*sz);
+    wv.ctx.stroke();
+
+    wv.ctx.lineWidth = 1.0;
+    wv.ctx.beginPath();
+    wv.ctx.moveTo(x0[0], x0[1]);
+    wv.ctx.lineTo(x0[0] + k[0]*sx,
+                    x0[1] - k[1]*sz);
+    wv.ctx.stroke();
+    //wv.ctx.closePath();
   return;
 }
