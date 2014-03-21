@@ -5,7 +5,7 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
 
 var allWaves = new Array(0);
 
-function InternalWave(ctx, k, m, phi) {
+function InternalWave(ctx, x, z, k, m, phi) {
   this.ctx = ctx;
   this.k = k;
   this.m = m;
@@ -16,6 +16,8 @@ function InternalWave(ctx, k, m, phi) {
   this.wz = [0.0, 1.0];
   this.width = this.wx[1] - this.wx[0];
   this.height = this.wz[1] - this.wz[0];
+  this.xi = x;
+  this.zi = z;
   //this.updateOmega();
   allWaves.push(this);
 }
@@ -49,7 +51,8 @@ InternalWave.prototype.reflect = function(beta, dx) {
   var kr = this.k * Math.sin(this.phi+beta) / Math.sin(this.phi-beta),
       mr = this.m * Math.sin(this.phi+beta) / Math.sin(this.phi-beta);
   console.log(phir, kr, mr);
-  wvr = new InternalWave(this.cntxt, kr, mr, phir);
+  var dz = (mr / kr) * dx;
+  wvr = new InternalWave(this.cntxt, this.xi+dx, this.zi+dz, kr, mr, phir);
   allWaves.push(wvr);
 }
 
@@ -71,24 +74,28 @@ function drawFrame(t) {
     var wv = allWaves[i],
         k = wv.kVec(),
         cg = wv.cgVec(),
-        x0 = [0.5*cparams.width, 0.5*cparams.height],
+        x0 = [(wv.xi-wv.wx[0]) / (wv.wx[1]-wv.wx[0]) * cparams.width,
+              (wv.zi-wv.wz[0]) / (wv.wz[1]-wv.wz[0]) * cparams.height],
         sx = cparams.width / wv.width,
         sz = cparams.height / wv.height;
 
-    wv.ctx.lineWidth = 3.0;
-    wv.ctx.beginPath();
-    wv.ctx.moveTo(x0[0], x0[1]);
-    wv.ctx.lineTo(x0[0] + cg[0]*sx,
-                    x0[1] - cg[1]*sz);
-    wv.ctx.stroke();
+    if (wv.ctx) {
+      wv.ctx.lineWidth = 3.0;
+      wv.ctx.beginPath();
+      wv.ctx.moveTo(x0[0], x0[1]);
+      wv.ctx.lineTo(x0[0] + cg[0]*sx,
+                      x0[1] - cg[1]*sz);
+      wv.ctx.stroke();
 
-    wv.ctx.lineWidth = 1.0;
-    wv.ctx.beginPath();
-    wv.ctx.moveTo(x0[0], x0[1]);
-    wv.ctx.lineTo(x0[0] + k[0]*sx,
-                    x0[1] - k[1]*sz);
-    wv.ctx.stroke();
-    //wv.ctx.closePath();
+      wv.ctx.lineWidth = 1.0;
+      wv.ctx.beginPath();
+      wv.ctx.moveTo(x0[0], x0[1]);
+      wv.ctx.lineTo(x0[0] + k[0]*sx,
+                      x0[1] - k[1]*sz);
+      wv.ctx.stroke();
+      //wv.ctx.closePath();
+    } else {
+    console.log("wave "+i+" out of view")}
   }
   return;
 }
