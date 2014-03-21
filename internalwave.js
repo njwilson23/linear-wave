@@ -1,3 +1,4 @@
+'use strict';
 window.requestAnimationFrame = window.requestAnimationFrame ||
                               window.mozRequestAnimationFrame ||
                               window.webkitRequestAnimationFrame ||
@@ -50,7 +51,7 @@ InternalWave.prototype.reflect = function(beta, dx) {
   var kr = this.k * Math.sin(this.phi+beta) / Math.sin(this.phi-beta),
       mr = this.m * Math.sin(this.phi+beta) / Math.sin(this.phi-beta);
   var dz = -Math.sin(this.phi) * dx;
-  wvr = new InternalWave(this.ctx, this.xi+dx, this.zi+dz, kr, mr, phir);
+  var wvr = new InternalWave(this.ctx, this.xi+dx, this.zi+dz, kr, mr, phir);
   return wvr;
 }
 
@@ -91,5 +92,7 @@ function drawFrame(t) {
                       x0[1] - k[1]*sz);
       wv.ctx.stroke();
       //wv.ctx.closePath();
+    }
+  }
   return;
 }
