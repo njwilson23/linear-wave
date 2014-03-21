@@ -50,10 +50,9 @@ InternalWave.prototype.reflect = function(beta, dx) {
   }
   var kr = this.k * Math.sin(this.phi+beta) / Math.sin(this.phi-beta),
       mr = this.m * Math.sin(this.phi+beta) / Math.sin(this.phi-beta);
-  console.log(phir, kr, mr);
-  var dz = (mr / kr) * dx;
-  wvr = new InternalWave(this.cntxt, this.xi+dx, this.zi+dz, kr, mr, phir);
-  allWaves.push(wvr);
+  var dz = -Math.sin(this.phi) * dx;
+  wvr = new InternalWave(this.ctx, this.xi+dx, this.zi+dz, kr, mr, phir);
+  return wvr;
 }
 
 function drawLoop(t) {
