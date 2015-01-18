@@ -19,22 +19,29 @@
   <style>
 
   @font-face {
-  	font-family: 'Computer Modern Serif';
-  	src: url('fonts/cmunrm.eot');
-  	src: url('fonts/cmunrm.eot?#iefix') format('embedded-opentype'),
-  		 url('fonts/cmunrm.woff') format('woff'),
-  		 url('fonts/cmunrm.ttf') format('truetype'),
-  		 url('fonts/cmunrm.svg#cmunrm') format('svg');
-  	font-weight: normal;
-  	font-style: normal;
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Roboto'),url(//brick.a.ssl.fastly.net/fonts/roboto/400.woff) format('woff');
+  }
+
+  @font-face {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Roboto Bold'),url(http://brick.a.ssl.fastly.net/fonts/roboto/700.woff) format('woff');
   }
 
   body {
-    font-family: 'Computer Modern Serif', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-size: medium;
+    overflow: hidden;
   }
 
   canvas#waves {
-    width: 99%;
+    width: 102%;
+    height: 100%;
+    margin-left: -1%;
     position: absolute;
     z-index: -1;
   }
@@ -42,13 +49,12 @@
   span.resultType {
     float: left;
     width: 10em;
-    font-size: large;
   }
 
   span.result {
     float: right;
     width: 5em;
-    font-size: x-large;
+    font-size: large;
   }
 
   div#results {
