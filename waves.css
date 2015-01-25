@@ -1,20 +1,6 @@
-@font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Roboto'),url(//brick.a.ssl.fastly.net/fonts/roboto/400.woff) format('woff');
-}
-
-@font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 700;
-    src: local('Roboto Bold'),url(http://brick.a.ssl.fastly.net/fonts/roboto/700.woff) format('woff');
-}
-
 body {
-  font-family: 'Roboto', sans-serif;
-  font-size: medium;
+/*   font-family: 'Roboto', sans-serif; */
+/*   font-size: medium; */
   overflow: hidden;
 }
 
@@ -56,7 +42,6 @@ div#results:hover {
 }
 
 div#controls {
-  width: 16em;
   position: fixed;
   left: 2em;
   bottom: 2em;
@@ -86,3 +71,8 @@ input[type=button] {
   margin: 0 auto;
 }
 
+@media (min-width: 400px) {
+  div#controls {
+    width: 16em;
+  }
+}
