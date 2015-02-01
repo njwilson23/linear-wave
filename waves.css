@@ -5,8 +5,8 @@ body {
 }
 
 canvas#waves {
-  width: 102%;
-  height: 100%;
+  min-width: 102%;
+  min-height: 100%;
   margin-left: -1%;
   position: absolute;
   z-index: -1;
