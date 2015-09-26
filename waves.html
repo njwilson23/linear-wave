@@ -17,7 +17,7 @@
 
 <body>
 
-  <canvas id="waves" width="1000" height="700"></canvas> 
+  <canvas id="waves" width="700" height="700"></canvas>
 
   <div id="results">
     <table>
@@ -61,7 +61,7 @@
 
     function setInputH() {
       H = parseFloat(document.getElementById("H").value);
-      L = 1.42*H;
+      L = width/height*H;
       x = Array.apply(null, Array(n)).map(function (_, i) {return L/n*i;});
       waterclr = createWaterGradient(H);
       document.getElementById("HValue").textContent = H;
@@ -80,7 +80,7 @@
     function updateResults() {
       var k = parseFloat(document.getElementById("kValue").textContent),
           H = parseFloat(document.getElementById("HValue").textContent);
-     
+
       var om = Math.sqrt(g*k * Math.tanh(k*H));
       var cp = Math.sqrt(g/k * Math.tanh(k*H));
       var cg = cp/2 * (1 + k*H * (1-Math.pow(Math.tanh(k*H), 2)) / (Math.tanh(k*H)));
@@ -108,6 +108,11 @@
     }
 
     reset();    // set to defaults
+
+    window.onresize = function() {
+      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+    };
 
     requestAnimationFrame(drawLoop);
   </script>

@@ -15,8 +15,12 @@ var g = 9.8,
     fracSky = 0.2;
 
 var canvas = document.getElementById('waves');
-var context = canvas.getContext('2d'),
-    height = canvas.height,
+var context = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+var height = canvas.height,
     width = canvas.width;
 
 var startTime = null;
@@ -35,10 +39,18 @@ function clearFrame() {
 }
 
 function drawFrame(t) {
+  height = canvas.height,
+  width = canvas.width;
+  L = width/height*H;
+
   addWater(t);
 
-  var particleY = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
-  var particleX = [0.1, 0.5, 0.9];
+  var particleY = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.975];
+  if (width < 800) {
+    var particleX = [0.1, 0.5, 0.9];
+  } else {
+    var particleX = [0.1, 0.3, 0.5, 0.7, 0.9];
+  }
   for (var ipy=0; ipy < particleY.length; ipy++) {
     for (var ipx=0; ipx < particleX.length; ipx++) {
       addParticle(particleX[ipx]*width, particleY[ipy]*height, t);
