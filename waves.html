@@ -112,6 +112,7 @@
     window.onresize = function() {
       canvas.height = window.innerHeight;
       canvas.width = window.innerWidth;
+      x = Array.apply(null, Array(n)).map(function (_, i) {return L/n*i;});
     };
 
     requestAnimationFrame(drawLoop);
